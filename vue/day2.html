@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		[v-cloak]{
+			display: none;
+		}
+		.fade-transition{
+			width:100px;
+			height: 100px;
+			background-color: green;
+			transition:all 0.5s ease;
+		}
+		.fade-enter,.fade-leave{
+			opacity:0;
+			width:50px;
+			height:50px;
+		}
+	</style>
+</head>
+<body id="demo">
+	
+	<!-- vue插值不支持v-bind? -->
+	<!-- <div v-bind="vm.initA"></div> -->
+
+	<!-- 修饰符可以串联，可以只有修饰符，不让方法处理dom细节更好 -->
+	<div v-cloak v-on:click.prevent.stop="greet($event)">{{computedA}}</div>
+
+	<input v-model="inputVal" type="text" v-on:keyup.enter="submit" lazy>
+	<div>{{inputVal}}</div>
+	<input type="text" v-model="age" number>
+	<div>{{age}}</div>
+	<input type="checkbox" v-model="isHide">
+	<div id="fade" v-show="isHide"  transition="fade">test Fade</div>
+
+	<script src="js/vue.js"></script>
+	<script>
+		Vue.config.debug = true;
+		Vue.transition('fade',{
+			enter : function(el){
+				el.textContent = "fuck you"
+			},
+			leave : function(el){
+				el.textContent = "hehe"
+			}
+		})
+		var vm = new Vue({
+			el : "#demo",
+			data:{
+				isHide : true,
+				initA : 5,
+				inputVal : "",
+				age : ""
+			},
+			created:function(){
+				console.log('init');
+			},
+			computed:{
+				computedA : function(){
+					return this.initA + 1;
+				}
+			},
+			methods:{
+				greet : function(e){
+					alert(this.initA);
+					console.log(e);
+				},
+				submit:function(){
+					console.log(this.inputVal)
+				}
+			}
+		})
+	</script>
+</body>
+</html>

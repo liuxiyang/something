@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+
+	<div>{{ val | reverse }}</div>
+	<input v-my-directive a="vadfdsl" v-model="val">
+	<my-directive></my-directive>
+
+	<script src="js/vue.js"></script>
+	<script>
+		Vue.config.debug = true;
+
+		Vue.filter('reverse',function(val){
+			return val.split('').reverse().join('');
+		})
+
+		Vue.directive('my-directive',{
+			deep : false, //true,用在obj上，obj属性变化时触发update
+			params : ["a"],
+			bind : function(){
+				console.log(this.params.a)
+			},
+			update : function(nv,ov){
+				console.log(this.el);
+				console.log(this.vm);
+				console.log(this.name);
+				console.log(this.expression);
+				console.log(this.arg);
+			},
+			unbind : function(){
+
+			}
+		});
+
+		// 元素指令，元素指令是终结性的，只有该元素指令本身可以操作该元素及其子元素
+		Vue.elementDirective('my-directive',{
+			bind : function(){
+				console.log(this.vm);
+			}
+		})
+
+		var vm = new Vue({
+			
+			el : 'body',
+			data : {
+				val : "I miss you"
+			},
+			created : function(){
+				console.log("vue init");
+			}
+
+
+		})
+
+	</script>
+</body>
+</html>

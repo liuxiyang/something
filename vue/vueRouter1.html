@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>vue-router</title>
+	<style>
+		.v-link-active{
+			color: red;
+		}
+		.custom-active-class{
+			font-weight: bold;
+			color: green;
+		}
+	</style>
+</head>
+<!-- 沉默是绝望者最后的尊严,沉默是复仇者最高的轻蔑 -->
+<body>
+	<template id="sub">
+		<div>
+			<h2>this is subPage</h2>
+			<router-view></router-view>
+		</div>
+	</template>
+
+	<div id="app">
+		<h1>hello!</h1>
+		<p>
+			<a v-link="{path : '/page1'}">page1</a>
+			<a v-link="{path : '/page2'}">page2</a>
+			<a v-link="{path : '/sub',exact: true}">subPage</a>
+			<a v-link="{path : '/sub/sub1',activeClass: 'custom-active-class'}">sub1</a>
+			<a v-link="{path : '/sub/sub2'}">sub2</a>
+			<a v-link="{path : '/user/aaa'}">user</a>
+		</p>
+		<router-view></router-view>
+	</div>	
+
+	<script src="js/vue.js"></script>
+	<script src="node_modules/vue-router/dist/vue-router.js"></script>
+	<script>
+		Vue.config.debug = true;
+
+		var U1 = Vue.extend({
+			template : "<div>this is page1--{{$route.path}}--{{$route.router}}--{{$route.name}}</div>"
+		});
+
+		var U2 = Vue.extend({
+			template : "<div>this is page2<div>"
+		});
+
+		var sub = Vue.extend({
+			template : "#sub"
+		});
+
+		var router = new VueRouter({
+			hashbang : true,
+			history : false,
+			transitionOnLoad : true
+		});
+
+		// router.on('/user/:username',{
+		// 	component : {
+		// 		template : "......."
+		// 	}
+		// })
+		// router.map() 对于接收到的路由映射对象中每个键值对都调用 router.on()
+
+		router.map({
+			"/page1" : {
+				component : U1,
+				auth : true      //自定义字段 this.$route.auth
+			},
+			"/page2" : {
+				component : U2
+			},
+			"/sub" : {
+				component : sub,
+				subRoutes : {
+					"/" : {   //路由嵌套，默认标示
+						component : {
+							template : "<h3>this is default subPage--{{$route.path}}</h3>"
+						}
+					},
+					"sub1" : {
+						component : U1
+					},
+					"sub2" : {
+						component : {
+							template : "<h3>this is sub2 page</h3>"
+						}
+					}
+				}
+			},
+			"/user/:username/id/:userId" : {
+				component : {
+					template : "<h2>用户名是{{$route.params.username}},id是{{$route.params.userId}}</h2>"
+				}
+			}
+		});
+
+		router.redirect({
+			"*" : "/page2",
+			"/u/:username/i/:userId" : "/user/:username/id/:userId"
+		});
+
+		var app = Vue.extend({});
+		router.start(app,"#app");
+	</script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body id="demo">
+
+	<zidingyi></zidingyi>
+	<hehe></hehe>
+	<hehe></hehe>
+	<!-- is特性，不用自定义元素会被放在元素外面 -->
+	<table>
+		<tr is="hehe"></tr>
+	</table>
+
+	<!-- 不能驼峰形式命名？ -->
+	<!-- 名字形式为 camelCase 的 prop 用作特性时，需要转为 kebab-case -->
+	<parent :msg="lxy" v-bind:second-msg="5>4"></parent>
+	<!-- 字面量语法传递字符串如“5>4”，动态语法（v-bind）传递表达式“true” -->
+
+	<div>
+		
+		<input type="text" v-model="lxy"><br>
+		<child v-bind:my-msg.sync="lxy"></child>
+	</div>
+	
+	<script src="js/vue.js"></script>
+	<script>
+		Vue.config.debug = true;
+
+
+		Vue.component("zidingyi",{
+			template : "<h1>我是自定义组件</h1>"
+		})
+
+		// var myCom = Vue.extend({
+		// 	data : function(){
+		// 		return {a:"1212"}
+		// 	},
+		// 	template : "<h2>哈哈哈{{a}}</h2>"
+		// })
+
+		// el,data,应当返回一个函数
+		Vue.component("hehe",{
+			el : function(){
+				return "#demo"
+			},
+			data : function(){
+				return {a:"1212"}
+			},
+			template : "<h2>哈哈哈{{a}}</h2>"
+		});
+
+
+		Vue.component("parent",{
+			data : function(){
+				return {
+					msg2 : 2
+				}
+			},
+			// props : ["msg","secondMsg"],
+			props : {
+				msg : String,
+				secondMsg : {
+					type : Boolean,
+					required : true
+				}
+			},
+			// template : "<div>{{ msg }}</div><div>{{ secondMsg }}</div>"
+			template : "<div><input type='text' value={{msg}}><input type='text' value={{secondMsg}}></div>"
+		})
+
+		Vue.component("child",{
+			data : function(){
+				return {
+					lxy : "22"
+				}
+			},
+			props : ["myMsg"],
+			template:"{{ myMsg }}"
+		})
+
+		var vm = new Vue({
+			el : "#demo",
+			data : {
+				lxy : "1"
+			},
+			created : function(){
+				console.log("init");
+			}
+		})
+	</script>
+</body>
+</html>

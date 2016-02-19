@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+
+	<template id="child-ex">
+		<input type="text" v-model="msg">
+		<input type="button" v-on:click="submit" value="dispatch event">
+	</template>
+	
+	<div id="parent-ex">
+		<button v-on:click="bro">broadcast</button>
+		<p>Messages: {{ message | json }}</p>
+		<child v-ref:xx v-on:child-event = "childEvent"></child>
+	</div>
+
+	<script src="js/vue.js"></script>
+	<script>
+
+		Vue.component("child",{
+			template:"#child-ex",
+			data : function(){
+				return {
+					msg : "hello"
+				}
+			},
+			methods : {
+				submit : function(){
+					if(this.msg.trim()){
+						this.$dispatch('child-event',this.msg);
+						this.msg = "";
+					}
+				}
+			},
+			events : {
+				broEvent : function(msg){
+					console.log(msg)
+				}
+			}
+		});
+
+		var vm = new Vue({
+			el : "#parent-ex",
+			data : {
+				message : []
+			},
+			// events : {
+			// 	childEvent:function(msg){
+			// 		this.message.push(msg);
+			// 	}
+			// },
+			methods: {
+				bro : function(msg){
+					this.$broadcast('broEvent',this.message);
+				},
+				childEvent : function(msg){
+					this.message.push(msg);
+				}
+			}
+		});
+		console.log(vm.$refs.xx);
+	</script>
+</body>	
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		[v-cloak] {
+		  display: none;
+		}
+	</style>
+</head>
+
+
+<body id="demo">
+	<input type="text" v-model="msg">
+	<!-- *首次插值 -->
+	<div v-cloak id="item{{id}}">{{{*msg}}}</div> 
+	<div v-cloak>b={{b}}</div>
+	<div v-cloak>c={{c}}</div>
+
+	<!-- v-show不支持template -->
+	<template v-if="a">
+		<p>111</p>
+		<p>222</p>
+	</template>
+	<div v-else>333</div>
+	<ul>
+		<li v-for="(key,value) in items">
+			{{key}}==={{value}}
+		</li>
+	</ul>
+	<p v-for="it in arr" track-by="$index">
+		{{it}}
+	</p>
+	<script src="js/vue.js"></script>
+	<script>
+
+
+		//<a v-bind:href.literal="/a/b/c"></a>
+		// 参数.修饰符
+
+		var vm = new Vue({
+			el : "#demo",
+			data : {
+				a : 0,
+				id : "1212",
+				msg : '<h1>111</h1>',
+				items : {
+					a1:"a11",
+					a2:"a22",
+					"a3":"a33"
+				},
+				arr:[
+					1,2,3,4,5
+				]
+			},
+			created:function(){
+				console.log("init_msg=" + this.msg);
+			},
+			computed:{
+				//一个计算属性的getter
+				b:function(){
+					return this.a + 1
+				},
+				//Vue 知道 vm.b 依赖于 vm.a，因此当 vm.a 发生改变时，依赖于 vm.b 的绑定也会更新
+				c:function(){
+					return "xx"
+				}
+			}
+		})
+
+		vm.$watch('msg',function(nv,ov){
+			console.log(nv);
+			console.log(ov);
+		})
+
+	</script>
+	
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		[v-cloak]{
+			display:none;
+		}
+	</style>
+</head>
+<body>
+	<template id="child-rex">
+		<div>
+			<slot></slot>
+			<h1>This is my component!{{xxx}}</h1>
+			<slot name="one"></slot>
+		</div>
+	</template>
+
+	<!-- 显式声明数据来自哪里可以让组件复用在其它地方 -->
+	<child v-for="item in items" v-bind:item="item" v-bind:idx="$index" v-on:click="handleIt($event,$index,item)"></child>
+	<com></com>
+	<lxy>{{ lxyVal }}</lxy>
+
+	<parent>
+			<p slot="one">parent p 1</p>
+			<p>fsdfsfsdf{{lxyVal}}</p>
+	</parent>
+
+	<script src="js/vue.js"></script>
+	<script>
+		Vue.config.debug = true;
+
+		Vue.component('parent',{
+			data : function(){
+				return {
+					xxx : 1111
+				}
+			},
+			template : "#child-rex"
+		});
+
+		Vue.component("child",{
+			created : function(){
+				console.log("component init")
+			},
+			props : ["item","idx"],
+			template : "<div><span>{{ item }}</span><span>{{ idx }}</span></div>"
+			// methods : {
+			// 	handleIt : function(e,idx){
+			// 		console.log(e);
+			// 		console.log(idx);
+			// 	}
+			// }
+
+			// 不行？
+		});
+
+
+		Vue.component("lxy",{
+			data : function(){
+				return {
+					lxyVal : 111
+				}
+			}
+		});
+
+
+		// 异步组件，工厂函数
+		Vue.component("com",function(resolve,reject){
+			setTimeout(function(){
+				resolve({
+					template : "<div>I am async</div>"
+				})
+			},1000)
+		});
+
+		var vm = new Vue({
+			el : 'body',
+			data : {
+				lxyVal :2222,
+				msg : "123",
+				items : ["lxy","fjh","xj","lj"]
+			},
+			created : function(){
+				console.log(this)
+				console.log("init");
+			},
+			methods : {
+				xx : function(){
+					this.$nextTick(function(){
+						console.log(this.$el.textContent);
+					})
+				},
+				handleIt : function(e,idx,item){
+					console.log(e);
+					console.log(idx);
+					console.log(item);
+				}
+			}
+		})
+		vm.message = "234";
+		// 为了在数据变化之后等待 Vue.js 完成更新 DOM，可以在数据变化之后立即使用 Vue.nextTick(callback)
+		Vue.nextTick(function(){
+			console.log(this)
+			console.log(vm.$el.textContent === "234");
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		.aa{
+			color:red;
+		}
+		.bbb{
+			font-size:20px;
+		}
+		.Fddoo{
+			color:green;
+			font-style: italic;
+		}
+	</style>
+</head>
+<body id="demo">
+	<div id="app">
+	  <div>{{message}}</div>
+	  <input type="text" v-model="message">
+	  <input type="button" v-on:click="reve" value="reverse">
+	</div>
+	<div  v-bind:class="bindClass" class="aa" >{{fullName}}</div>
+	<div v-if="51>6">
+	  source
+	</div>
+	<div v-else>
+	  Not sorry
+	</div>
+	<input v-on:keyup.13="submit">
+	<hehe></hehe>
+
+	<script src="js/vue.js"></script>
+	<script>
+		// var vm = new Vue({
+		//   el: '#app',
+		//   data: {
+		//     message: 'Hello Vue.js!'
+		//   },
+		//   methods:{
+		//   	reve:function(){
+		//   		console.log(this.message)
+		//   		this.message = this.message.split('').reverse().join('');
+		//   	}
+		//   }
+		// })
+
+		//定义
+		var my = Vue.extend({
+			template:"<div><h1>hello, I am component</h1></div>"
+		})
+		//注册
+		Vue.component('hehe',my);
+
+		var vm = new Vue({
+			el:'#demo',
+			data: {
+				message:"hello biej",
+				firstName: 'Fddoo',
+				lastName: 'Bar'
+			},
+			computed:{
+				fullName:function(){
+					return this.firstName + this.lastName;
+				},
+				bindClass:function(){
+					return "bbb"
+				}
+			},
+			methods:{
+				reve:function(){
+					this.message = this.message.split('').reverse().join('');
+				},
+				submit:function(){
+					console.log('submit');
+				}
+			}
+		})
+
+		// vm.$watch('firstName', function (val) {
+		//   this.fullName = val + ' ' + this.lastName
+		// })
+
+		// vm.$watch('lastName', function (val) {
+		//   this.fullName = this.firstName + ' ' + val
+		// })
+
+	</script>
+
+</body>
+</html>
