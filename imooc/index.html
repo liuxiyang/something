@@ -4,8 +4,12 @@
 	<meta charset="UTF-8">
 	<title>贺春</title>
 	<style>
+		xhr.onreadystatechange = function()
 		/*html,body在html5中都是块状元素*/
 		/*background-size: cover;background-position: center;制作背景满屏效果*/
+		/*vue   数据驱动  组件化*/
+		/*vue  es5 Object.defineProperty  观察和收集依赖，不受制于watcher     
+		angular脏检测，所有watcher都检查*/
 		html,body{
 			height: 100%;
 		}
@@ -71,6 +75,14 @@
 		audio.addEventListener("ended",function(e){
 			
 		},false)
+
+		var addEvent = function(el,ev,fn){
+			if(el.addEventListener){
+				el.addEventListener(ev,fn,false)
+			}else if(el.attachEvent){	
+				el.attachEvent('on'+ev,fn);
+			}
+		}
 	</script>
 </body>
 </html>
