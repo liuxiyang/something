@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="Zh-cn">
+<head>
+	<meta charset="UTF-8">
+	<title>贺春</title>
+	<style>
+		/*html,body在html5中都是块状元素*/
+		/*background-size: cover;background-position: center;制作背景满屏效果*/
+		html,body{
+			height: 100%;
+		}
+		.page{
+			height: 100%;
+		}
+		.bg{
+			z-index:-1;
+			position: absolute;
+			width: 100%;
+			height: 100%;
+		}
+
+		.page1{
+			-webkit-transition: all 1s;
+			-o-transition: all 1s;
+			transition: all 1s;
+		}
+		.page .fadeOut{
+			-webkit-transition: translate(0,-100%);
+			-o-transition: translate(0,-100%);
+			transition: translate(0,-100%);
+		}
+		.page2{
+			-webkit-animation: xx 1s linear infinite;
+			-o-animation: xx 1s linear infinite;
+			animation: xx 1s linear infinite;
+		}
+		@keyframes xx{ //keyframes自动播放，transition要有个触发契机
+			0%{
+
+			},
+			100%{
+
+			}
+		}
+	</style>
+</head>
+<body>
+	<div id="music">
+		<img src="" alt="">
+		<img src="" alt="">
+	</div>
+	<div class="page" id="page1">
+		<div class="bg"></div>
+	</div>
+	<div class="page" id="page1">
+		<div class="bg"></div>
+	</div>
+	<div class="page" id="page1">
+		<div class="bg"></div>
+	</div>
+	<script>
+		music.addEventListener('touchstart',function(){
+			if(audio.paused){
+				audio.play();
+				this.setAttribute('class','play');
+			}else{
+				audio.pause();
+				this.setAttribute('class','');
+			}
+		},false)
+		audio.addEventListener("ended",function(e){
+			
+		},false)
+	</script>
+</body>
+</html>

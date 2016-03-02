@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		[v-cloak] {
+		  display: none;
+		}
+	</style>
+</head>
+
+
+<body id="demo">
+
+	<template id="tempId">
+	    <h1>{{msg}}</h1>
+	    <div>
+	        <div v-if="$loadingAsyncData">
+	            <div>给我一点时间...</div>
+	        </div>
+	        <div v-if="!$loadingAsyncData" >
+	            <div>already ok</div>
+	        </div>
+	    </div>
+	</template>
+
+	<div id="demo">
+		<hehe></hehe>
+	</div>
+
+
+	<script src="js/vue.js"></script>
+	<script src="node_modules/vue-async-data/vue-async-data.js"></script>
+	<script>
+		Vue.component("hehe",{
+			template : "#tempId",
+			data : function(){
+				return {
+					msg : 111
+				}
+			},
+			asyncData : function(resolve,reject){
+				setTimeout(function(){
+					resolve({
+						msg : 222
+					})
+				},1000)
+			}
+
+		});
+		var vm = new Vue({
+			el : "#demo",
+			data : {
+				msg : ""
+			}
+		});
+	</script>
+	
+</body>
+</html>
