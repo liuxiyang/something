@@ -1,8 +1,8 @@
 ## vuejs学习笔记
 
-### vue核心 **数据驱动，组件化**
+vue核心 -- **数据驱动，组件化**
 
-### es5 Object.defineProperty  观察和收集依赖，不受制于watcher
+> es5 Object.defineProperty  观察和收集依赖，不受制于watcher
 
 ###　*首次插值
 ```html
@@ -16,7 +16,7 @@
 	</template>
 ```
 
-### 修饰符可以串联，可以只有修饰符，不让方法处理dom细节更好
+###修饰符可以串联，可以只有修饰符，不让方法处理dom细节更好
 ```html
 	<div v-cloak v-on:click.prevent.stop="greet($event)">{{computedA}}</div>
 ```

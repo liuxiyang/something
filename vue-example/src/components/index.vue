@@ -2,7 +2,7 @@
 <style src="../assets/css/index.css" scoped></style>
 <template>
   <section class="sec-index">
-  	<div class="header">{{ title }}</div>
+  	<div class="header" v-text="title"></div>
   	<div class="content"></div>
   	<div class="footer">
   		<button v-link="{path : '/list'}">{{ btnmMg }}</button>
